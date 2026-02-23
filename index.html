@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Threshold Signal — Uplift Growth Strategies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #1a1a2e;
+    --slate: #2d2d44;
+    --warm-white: #faf8f5;
+    --cream: #f0ece4;
+    --accent: #c17f3e;
+    --accent-light: #d4a574;
+    --accent-glow: rgba(193, 127, 62, 0.15);
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a72;
+    --text-light: #8a8a9a;
+    --border: #e2ddd5;
+    --success: #3a7d5c;
+    --warning: #c17f3e;
+    --danger: #a94442;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 60px 0 20px;
+  }
+
+  .brand {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  .header .subtitle {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 12px;
+    line-height: 1.7;
+  }
+
+  .header .time-note {
+    font-size: 14px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  /* ── Intro Section ── */
+  .intro {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .intro p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  .start-btn {
+    display: inline-block;
+    background: var(--charcoal);
+    color: var(--warm-white);
+    padding: 16px 48px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .start-btn:hover {
+    background: var(--slate);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(26, 26, 46, 0.2);
+  }
+
+  /* ── Assessment ── */
+  .assessment { display: none; padding: 40px 0; }
+  .assessment.active { display: block; }
+
+  .progress-container {
+    margin-bottom: 48px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  .question-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dimension-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .question-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 3.5vw, 28px);
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--charcoal);
+    margin-bottom: 36px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 18px 24px;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1.5;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+  }
+
+  .option-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  /* ── Results ── */
+  .results { display: none; padding: 40px 0 60px; }
+  .results.active { display: block; }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .results-header .result-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .score-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .score-display span {
+    font-size: 28px;
+    color: var(--text-light);
+  }
+
+  .readiness-level {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+  }
+
+  .readiness-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Dimension bars */
+  .dimensions-section {
+    margin-bottom: 48px;
+  }
+
+  .dimensions-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 24px;
+  }
+
+  .dim-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+
+  .dim-name {
+    width: 160px;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .dim-bar-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dim-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--cream);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+
+  .dim-score {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 32px;
+  }
+
+  /* ── Blurred teaser ── */
+  .blurred-section {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .blurred-content {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+    padding: 32px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .blurred-content h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: var(--charcoal);
+  }
+
+  .blurred-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .blur-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .blur-overlay-text {
+    background: white;
+    padding: 16px 32px;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal);
+    text-align: center;
+  }
+
+  /* ── Email form ── */
+  .email-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .email-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .email-section p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+  }
+
+  .email-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .email-form input {
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text-primary);
+    transition: border-color 0.2s ease;
+    background: var(--warm-white);
+  }
+
+  .email-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .email-form input::placeholder {
+    color: var(--text-light);
+  }
+
+  .submit-btn {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    background: var(--slate);
+    transform: translateY(-1px);
+  }
+
+  .email-success {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .email-success .checkmark {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .email-success h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .email-success p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  /* ── CTA section ── */
+  .cta-section {
+    text-align: center;
+    padding: 40px;
+    background: var(--charcoal);
+    border-radius: 12px;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+  }
+
+  .cta-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cta-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--warm-white);
+    margin-bottom: 12px;
+  }
+
+  .cta-section p {
+    font-size: 15px;
+    color: rgba(250, 248, 245, 0.7);
+    margin-bottom: 24px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 14px 36px;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .cta-btn:hover {
+    background: var(--accent-light);
+    transform: translateY(-1px);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  /* Hidden utility */
+  .hidden { display: none !important; }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .header { padding: 40px 0 16px; }
+    .dim-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .dim-name { width: auto; }
+    .dim-bar-container { width: 100%; }
+    .email-section { padding: 28px 20px; }
+    .cta-section { padding: 28px 20px; }
+    .option-btn { padding: 16px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">Uplift Growth Strategies</div>
+    <h1>The Threshold Signal</h1>
+    <p class="subtitle">Five questions that reveal whether your company has outgrown your operating model — and where the constraint actually lives.</p>
+    <p class="time-note">Takes about 2 minutes</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro" id="introSection">
+    <p>Most founders between $2M and $10M hit a point where growth stalls — not because of the market, but because the business has outgrown how it's being run. This signal identifies where that threshold is for you.</p>
+    <button class="start-btn" onclick="startAssessment()">Find Your Signal</button>
+  </div>
+
+  <!-- ASSESSMENT -->
+  <div class="assessment" id="assessmentSection">
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressDimension"></span>
+        <span id="progressCount">Question 1 of 5</span>
+      </div>
+    </div>
+    <div id="questionContainer"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="resultsSection">
+    <div class="results-header">
+      <div class="result-label">Your Threshold Signal</div>
+      <div class="score-display" id="totalScore"></div>
+      <div class="readiness-level" id="readinessLevel"></div>
+      <p class="readiness-desc" id="readinessDesc"></p>
+    </div>
+
+    <div class="dimensions-section">
+      <div class="dimensions-title">Your Signal by Dimension</div>
+      <div id="dimensionBars"></div>
+    </div>
+
+    <!-- Blurred teaser sections -->
+    <div class="blurred-section">
+      <div class="blurred-content">
+        <h3>Your Primary Constraint</h3>
+        <p>Based on your responses, the structural issue most limiting your growth is in the area of strategic delegation and decision architecture. This is common in companies at your stage — the founder has successfully built something real, but the operating model hasn't evolved to match.</p>
+        <p>Specifically, the pattern suggests that decisions still flow through a single point, creating a bottleneck that limits both speed and scale.</p>
+      </div>
+      <div class="blur-overlay">
+        <div class="blur-overlay-text">Included in your full report ↓</div>
+      </div>
+    </div>
+
+    <div class="blurred-section">
+      <div class="blurred-content">
+        <h3>Recommended First Move</h3>
+        <p>The highest-leverage change you can make in the next 30 days is to map and redistribute decision rights across your team. Start with one category of decisions you're currently making that someone else could own.</p>
+        <p>This single shift typically frees 5–10 hours per week of founder capacity and begins to break the dependency pattern.</p>
+      </div>
+      <div class="blur-overlay">
+        <div class="blur-overlay-text">Included in your full report ↓</div>
+      </div>
+    </div>
+
+    <!-- Email capture -->
+    <div class="email-section" id="emailFormContainer">
+      <h3>Get Your Full Report</h3>
+      <p>Your primary constraint, recommended first move, and what to focus on in the next 90 days — personalized to your scores.</p>
+      <div class="email-form">
+        <input type="text" id="nameInput" placeholder="First name" />
+        <input type="email" id="emailInput" placeholder="Email address" />
+        <button class="submit-btn" onclick="submitResults()">Send My Full Report</button>
+      </div>
+    </div>
+
+    <div class="email-success" id="emailSuccess">
+      <div class="checkmark">✓</div>
+      <h3>Check Your Inbox</h3>
+      <p>Your personalized report is on its way.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section" id="ctaSection">
+      <h3>Want to Go Deeper?</h3>
+      <p>The full Founder-to-CEO Diagnostic is a structured 2-hour session that identifies your top constraints and builds a prioritized 90-day roadmap.</p>
+      <a href="https://calendly.com/bob-baranski-upliftgrowthstrategies/30min" class="cta-btn" target="_blank">Book a 15-Minute Fit Call</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 Uplift Growth Strategies
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    dimension: "Revenue Leverage",
+    text: "What percentage of your company's revenue requires your direct, personal involvement to deliver?",
+    options: [
+      { text: "Almost all of it — if I stop, revenue stops", score: 1 },
+      { text: "Most of it — maybe 70%+ still needs me directly", score: 2 },
+      { text: "About half — some revenue flows without me, but I'm still heavily involved", score: 3 },
+      { text: "Less than half — I've built offerings that don't require my time", score: 4 },
+      { text: "Very little — revenue is generated through systems, team, and scalable models", score: 5 }
+    ]
+  },
+  {
+    dimension: "Decision Rights",
+    text: "How many decisions per week require your direct approval that you wish didn't?",
+    options: [
+      { text: "Nearly everything flows through me — I'm the approval layer for most things", score: 1 },
+      { text: "A lot — probably 20+ decisions I shouldn't need to be involved in", score: 2 },
+      { text: "Some — maybe 10–15 that I could delegate if I trusted the process", score: 3 },
+      { text: "A few — my team handles most decisions, I weigh in on the big ones", score: 4 },
+      { text: "Rarely — clear decision rights exist and my team owns outcomes", score: 5 }
+    ]
+  },
+  {
+    dimension: "Strategic Focus",
+    text: "What percentage of your time last week was spent working ON the business (strategy, systems, vision) vs. IN it (delivery, troubleshooting, execution)?",
+    options: [
+      { text: "Almost entirely IN the business — I barely had time to think", score: 1 },
+      { text: "Mostly IN — maybe 80/20 operations vs. strategy", score: 2 },
+      { text: "Roughly split — I try to carve out strategic time but it keeps getting eaten", score: 3 },
+      { text: "Mostly ON — I've created space for strategic work, though it's not perfect", score: 4 },
+      { text: "Firmly ON — I have protected strategic time and my team runs operations", score: 5 }
+    ]
+  },
+  {
+    dimension: "Systems & Scalability",
+    text: "If you doubled revenue tomorrow, would your current systems and processes hold — or break?",
+    options: [
+      { text: "They'd break immediately — most things exist only in my head", score: 1 },
+      { text: "They'd strain badly — we have some processes but nothing is truly documented", score: 2 },
+      { text: "Mixed — some areas are solid, others would fall apart", score: 3 },
+      { text: "Mostly hold — we've documented key processes and can onboard people", score: 4 },
+      { text: "They'd hold — we have repeatable systems and playbooks across the business", score: 5 }
+    ]
+  },
+  {
+    dimension: "Founder Resilience",
+    text: "On a scale of energy and sustainability, how does running the business feel right now compared to two years ago?",
+    options: [
+      { text: "I'm close to breaking — the pace is not sustainable", score: 1 },
+      { text: "Significantly harder — I'm grinding but the energy isn't there", score: 2 },
+      { text: "About the same — manageable but I can feel the ceiling", score: 3 },
+      { text: "Better in some ways — I've started building support around me", score: 4 },
+      { text: "Energizing — I've got strong support, advisors, and manage my capacity well", score: 5 }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let answers = [];
+
+function startAssessment() {
+  document.getElementById('introSection').style.display = 'none';
+  document.getElementById('assessmentSection').classList.add('active');
+  showQuestion(0);
+}
+
+function showQuestion(index) {
+  const q = questions[index];
+  const container = document.getElementById('questionContainer');
+
+  document.getElementById('progressFill').style.width = ((index + 1) / questions.length * 100) + '%';
+  document.getElementById('progressDimension').textContent = q.dimension;
+  document.getElementById('progressCount').textContent = `Question ${index + 1} of ${questions.length}`;
+
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="dimension-label">${q.dimension}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectOption(${i})">${opt.text}</button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(optionIndex) {
+  // Highlight selection
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === optionIndex);
+  });
+
+  answers[currentQuestion] = optionIndex;
+
+  // Brief pause then advance
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      showQuestion(currentQuestion);
+    } else {
+      showResults();
+    }
+  }, 300);
+}
+
+function showResults() {
+  document.getElementById('assessmentSection').classList.remove('active');
+  document.getElementById('resultsSection').classList.add('active');
+
+  const totalScore = answers.reduce((sum, ansIdx, qIdx) => sum + questions[qIdx].options[ansIdx].score, 0);
+
+  // Display score
+  document.getElementById('totalScore').innerHTML = totalScore + '<span> / 25</span>';
+
+  // Readiness level
+  const levelEl = document.getElementById('readinessLevel');
+  const descEl = document.getElementById('readinessDesc');
+
+  if (totalScore >= 20) {
+    levelEl.textContent = 'CEO-Ready';
+    descEl.textContent = 'You\'ve made significant progress in the transition. Your constraints are refinement, not fundamental shifts. The signal here is about optimization — finding the last structural gaps that separate strong from exceptional.';
+  } else if (totalScore >= 15) {
+    levelEl.textContent = 'CEO-Emerging';
+    descEl.textContent = 'You\'re in the transition — some areas are strong, but 2–3 key gaps are limiting your next phase of growth. The signal is clear: specific structural changes will unlock significant capacity.';
+  } else if (totalScore >= 10) {
+    levelEl.textContent = 'Founder-Dependent';
+    descEl.textContent = 'The business runs through you — decisions, delivery, and direction all flow from one point. Growth is structurally limited until that changes. The question isn\'t whether to shift, but what to shift first.';
+  } else {
+    levelEl.textContent = 'Founder-Trapped';
+    descEl.textContent = 'You\'re fully embedded in operations. The CEO transition hasn\'t begun yet, and growth is constrained at every level. The good news: clarity on where to start changes everything.';
+  }
+
+  // Dimension bars
+  const barsContainer = document.getElementById('dimensionBars');
+  barsContainer.innerHTML = questions.map((q, i) => {
+    const score = q.options[answers[i]].score;
+    const pct = (score / 5) * 100;
+    let color;
+    if (score >= 4) color = '#3a7d5c';
+    else if (score === 3) color = '#c17f3e';
+    else color = '#a94442';
+
+    return `
+      <div class="dim-row">
+        <span class="dim-name">${q.dimension}</span>
+        <div class="dim-bar-container">
+          <div class="dim-bar">
+            <div class="dim-bar-fill" style="width: 0%; background: ${color};" data-width="${pct}%"></div>
+          </div>
+          <span class="dim-score" style="color: ${color}">${score}/5</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.dim-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width;
+    });
+  }, 400);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitResults() {
+  const name = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+
+  // Validate
+  if (!name) {
+    document.getElementById('nameInput').style.borderColor = '#a94442';
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    document.getElementById('emailInput').style.borderColor = '#a94442';
+    return;
+  }
+
+  // Reset border colors
+  document.getElementById('nameInput').style.borderColor = '';
+  document.getElementById('emailInput').style.borderColor = '';
+
+  // Disable button and show sending state
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  // Calculate scores for each dimension
+  const dimensionScores = answers.map((ansIdx, qIdx) => questions[qIdx].options[ansIdx].score);
+
+  const payload = {
+    name: name,
+    email: email,
+    scores: {
+      revenue: dimensionScores[0],
+      decision: dimensionScores[1],
+      strategy: dimensionScores[2],
+      systems: dimensionScores[3],
+      resilience: dimensionScores[4]
+    }
+  };
+
+  console.log('Submitting results:', payload);
+
+  try {
+    const response = await fetch('/.netlify/functions/send-results', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    console.log('Server response:', data);
+
+    if (response.ok) {
+      document.getElementById('emailFormContainer').style.display = 'none';
+      document.getElementById('emailSuccess').style.display = 'block';
+      document.getElementById('ctaSection').classList.add('visible');
+    } else {
+      throw new Error(data.error || 'Failed to send');
+    }
+  } catch (error) {
+    console.error('Submit error:', error);
+    btn.textContent = 'Send My Full Report';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    alert('Something went wrong. Please try again or email bob@upliftgrowthstrategies.com directly.');
+  }
+}
+</script>
+
+</body>
+</html>
