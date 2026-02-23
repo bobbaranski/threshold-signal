@@ -231,7 +231,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         from: 'Uplift Growth Strategies <results@upliftgrowthstrategies.com>',
         to: [email],
-        bcc: ['bob@upliftgrowthstrategies.com'],
+        bcc: ['bob.baranski@upliftgrowthstrategies.com'],
         subject: `${name}, Your Threshold Signal Results`,
         html: emailHtml
       })
