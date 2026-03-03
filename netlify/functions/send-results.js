@@ -191,13 +191,23 @@ exports.handler = async (event) => {
           </tr>
 
           <tr><td style="height: 24px;"></td></tr>
+<!-- Guide Download -->
+          <tr>
+            <td style="background: white; border-radius: 12px; border: 1px solid #e2ddd5; padding: 32px; text-align: center;">
+              <p style="font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #c17f3e; margin: 0 0 12px 0;">Go Deeper on Your Score</p>
+              <h2 style="font-size: 22px; font-weight: 400; color: #1a1a2e; margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif;">The Founder's Threshold Guide</h2>
+              <p style="font-size: 15px; color: #5a5a72; line-height: 1.7; margin: 0 0 20px 0;">What your score reveals about the next 12 months — and the structural shifts that change the trajectory. Five dimensions. Five patterns. The one that matters most for you.</p>
+              <a href="https://sprightly-gingersnap-0eb7cb.netlify.app/founders-threshold-guide.pdf" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Download the Guide (PDF)</a>
+            </td>
+          </tr>
 
+          <tr><td style="height: 24px;"></td></tr>
           <!-- CTA -->
           <tr>
             <td style="background: #1a1a2e; border-radius: 12px; padding: 40px; text-align: center;">
               <h2 style="font-size: 22px; font-weight: 400; color: #faf8f5; margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif;">Want to Go Deeper?</h2>
-              <p style="font-size: 15px; color: rgba(250, 248, 245, 0.7); margin: 0 0 24px 0; line-height: 1.6;">The Threshold Signal shows you where the constraint lives. The full Founder-to-CEO Diagnostic uncovers the root cause and builds a prioritized 90-day roadmap to address it.</p>
-              <a href="https://calendly.com/bob-baranski-upliftgrowthstrategies/30min" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Book a 15-Minute Fit Call</a>
+              <p style="font-size: 15px; color: rgba(250, 248, 245, 0.7); margin: 0 0 24px 0; line-height: 1.6;">The Threshold Signal shows you where the constraint lives. The Founder's Threshold is a structured 2-hour executive diagnostic that uncovers the root cause and builds a prioritized 90-day roadmap to address it.</p>
+              <a href="https://calendly.com/bob-baranski-upliftgrowthstrategies/30min" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Book a Fit Call</a>
             </td>
           </tr>
 
@@ -206,7 +216,7 @@ exports.handler = async (event) => {
           <!-- Footer -->
           <tr>
             <td style="text-align: center; padding-top: 24px; border-top: 1px solid #e2ddd5;">
-              <p style="font-size: 13px; color: #8a8a9a; margin: 0;">© 2025 Uplift Growth Strategies</p>
+              <p style="font-size: 13px; color: #8a8a9a; margin: 0;">© 2026 Uplift Growth Strategies</p>
               <p style="font-size: 13px; color: #8a8a9a; margin: 8px 0 0 0;">This email was sent because you completed The Threshold Signal assessment.</p>
             </td>
           </tr>
