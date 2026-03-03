@@ -197,7 +197,7 @@ exports.handler = async (event) => {
               <p style="font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #c17f3e; margin: 0 0 12px 0;">Go Deeper on Your Score</p>
               <h2 style="font-size: 22px; font-weight: 400; color: #1a1a2e; margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif;">The Founder's Threshold Guide</h2>
               <p style="font-size: 15px; color: #5a5a72; line-height: 1.7; margin: 0 0 20px 0;">What your score reveals about the next 12 months — and the structural shifts that change the trajectory. Five dimensions. Five patterns. The one that matters most for you.</p>
-              <a href="https://sprightly-gingersnap-0eb7cb.netlify.app/founders-threshold-guide.pdf" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Download the Guide (PDF)</a>
+              <a href="https://threshold-signal.netlify.app/founders-threshold-guide.pdf" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Download the Guide (PDF)</a>
             </td>
           </tr>
 
