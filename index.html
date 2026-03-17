@@ -547,7 +547,7 @@
   <div class="header">
     <div class="brand">Uplift Growth Strategies</div>
     <h1>The Threshold Signal</h1>
-    <p class="subtitle">Five questions that reveal whether your company has outgrown your operating model — and where the constraint actually lives.</p>
+    <p class="subtitle">Six questions that reveal whether your company has outgrown your operating model — and where the constraint actually lives.</p>
     <p class="time-note">Takes about 2 minutes</p>
   </div>
 
@@ -565,7 +565,7 @@
       </div>
       <div class="progress-text">
         <span id="progressDimension"></span>
-        <span id="progressCount">Question 1 of 5</span>
+        <span id="progressCount">Question 1 of 6</span>
       </div>
     </div>
     <div id="questionContainer"></div>
@@ -695,6 +695,17 @@ const questions = [
       { text: "Better in some ways — I've started building support around me", score: 4 },
       { text: "Energizing — I've got strong support, advisors, and manage my capacity well", score: 5 }
     ]
+  },
+  {
+    dimension: "Ownership & Accountability",
+    text: "When you look at the past 90 days, were most of your significant decisions reactions to problems — or proactive choices about where the business is heading?",
+    options: [
+      { text: "Almost entirely reactive — I spend my time putting out fires", score: 1 },
+      { text: "Mostly reactive — I know I should be more strategic but problems keep finding me", score: 2 },
+      { text: "A mix — I make some proactive moves but still get pulled into reactive mode", score: 3 },
+      { text: "Mostly proactive — I've shifted to designing how the business operates", score: 4 },
+      { text: "Firmly proactive — I focus on building systems that prevent problems from reaching me", score: 5 }
+    ]
   }
 ];
 
@@ -754,19 +765,19 @@ function showResults() {
   const totalScore = answers.reduce((sum, ansIdx, qIdx) => sum + questions[qIdx].options[ansIdx].score, 0);
 
   // Display score
-  document.getElementById('totalScore').innerHTML = totalScore + '<span> / 25</span>';
+  document.getElementById('totalScore').innerHTML = totalScore + '<span> / 30</span>';
 
   // Readiness level
   const levelEl = document.getElementById('readinessLevel');
   const descEl = document.getElementById('readinessDesc');
 
-  if (totalScore >= 20) {
+  if (totalScore >= 24) {
     levelEl.textContent = 'CEO-Ready';
     descEl.textContent = 'You\'ve made significant progress in the transition. Your constraints are refinement, not fundamental shifts. The signal here is about optimization — finding the last structural gaps that separate strong from exceptional.';
-  } else if (totalScore >= 15) {
+  } else if (totalScore >= 18) {
     levelEl.textContent = 'CEO-Emerging';
     descEl.textContent = 'You\'re in the transition — some areas are strong, but 2–3 key gaps are limiting your next phase of growth. The signal is clear: specific structural changes will unlock significant capacity.';
-  } else if (totalScore >= 10) {
+  } else if (totalScore >= 12) {
     levelEl.textContent = 'Founder-Dependent';
     descEl.textContent = 'The business runs through you — decisions, delivery, and direction all flow from one point. Growth is structurally limited until that changes. The question isn\'t whether to shift, but what to shift first.';
   } else {
@@ -842,7 +853,8 @@ async function submitResults() {
       decision: dimensionScores[1],
       strategy: dimensionScores[2],
       systems: dimensionScores[3],
-      resilience: dimensionScores[4]
+      resilience: dimensionScores[4],
+      ownership: dimensionScores[5]
     }
   };
 
