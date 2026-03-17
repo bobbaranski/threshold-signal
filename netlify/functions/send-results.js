@@ -19,21 +19,21 @@ exports.handler = async (event) => {
 
   try {
     const { name, email, scores } = JSON.parse(event.body);
-    // scores = { revenue: 3, decision: 2, strategy: 4, systems: 1, resilience: 3 }
+    // scores = { revenue: 3, decision: 2, strategy: 4, systems: 1, resilience: 3, ownership: 2 }
 
-    const totalScore = scores.revenue + scores.decision + scores.strategy + scores.systems + scores.resilience;
+    const totalScore = scores.revenue + scores.decision + scores.strategy + scores.systems + scores.resilience + scores.ownership;
 
     // Determine readiness level
     let readinessLevel, readinessDesc;
-    if (totalScore >= 20) {
+    if (totalScore >= 24) {
       readinessLevel = 'CEO-Ready';
-      readinessDesc = "You've made significant progress in the transition. Your constraints are refinement, not fundamental shifts. The signal here is about optimization — finding the last structural gaps that separate strong from exceptional.";
-    } else if (totalScore >= 15) {
+      readinessDesc = "You've made significant progress in the transition. Your constraints are refinement, not fundamental shifts. The signal here is about optimization \u2014 finding the last structural gaps that separate strong from exceptional.";
+    } else if (totalScore >= 18) {
       readinessLevel = 'CEO-Emerging';
-      readinessDesc = "You're in the transition — some areas are strong, but 2–3 key gaps are limiting your next phase of growth. The signal is clear: specific structural changes will unlock significant capacity.";
-    } else if (totalScore >= 10) {
+      readinessDesc = "You're in the transition \u2014 some areas are strong, but 2\u20133 key gaps are limiting your next phase of growth. The signal is clear: specific structural changes will unlock significant capacity.";
+    } else if (totalScore >= 12) {
       readinessLevel = 'Founder-Dependent';
-      readinessDesc = "The business runs through you — decisions, delivery, and direction all flow from one point. Growth is structurally limited until that changes. The question isn't whether to shift, but what to shift first.";
+      readinessDesc = "The business runs through you \u2014 decisions, delivery, and direction all flow from one point. Growth is structurally limited until that changes. The question isn't whether to shift, but what to shift first.";
     } else {
       readinessLevel = 'Founder-Trapped';
       readinessDesc = "You're fully embedded in operations. The CEO transition hasn't begun yet, and growth is constrained at every level. The good news: clarity on where to start changes everything.";
@@ -45,7 +45,8 @@ exports.handler = async (event) => {
       { key: 'decision', label: 'Decision Rights', score: scores.decision },
       { key: 'strategy', label: 'Strategic Focus', score: scores.strategy },
       { key: 'systems', label: 'Systems & Scalability', score: scores.systems },
-      { key: 'resilience', label: 'Founder Resilience', score: scores.resilience }
+      { key: 'resilience', label: 'Founder Resilience', score: scores.resilience },
+      { key: 'ownership', label: 'Ownership & Accountability', score: scores.ownership }
     ];
 
     const primaryConstraint = dimensions.reduce((min, d) => d.score < min.score ? d : min, dimensions[0]);
@@ -53,29 +54,34 @@ exports.handler = async (event) => {
     // Pre-written constraint analysis blocks
     const constraintAnalysis = {
       revenue: {
-        analysis: "Your revenue is tightly coupled to your personal involvement. This means growth is capped by your available hours — no matter how hard you work, there's a ceiling. The business can't scale beyond what you can personally deliver.",
-        firstMove: "Identify one current service or offering that could be packaged, grouped, or partially automated to reduce your direct 1:1 involvement. You don't need to rebuild your model — start with one offer and test it with 3 existing clients. The goal: prove that value can be delivered without your hands on every engagement.",
+        analysis: "Your revenue is tightly coupled to your personal involvement. This means growth is capped by your available hours \u2014 no matter how hard you work, there's a ceiling. The business can't scale beyond what you can personally deliver.",
+        firstMove: "Identify one current service or offering that could be packaged, grouped, or partially automated to reduce your direct 1:1 involvement. You don't need to rebuild your model \u2014 start with one offer and test it with 3 existing clients. The goal: prove that value can be delivered without your hands on every engagement.",
         metric: "Within 30 days, have one offering that reduces your per-client time by at least 30%."
       },
       decision: {
-        analysis: "Decisions still funnel through you — your team checks in on things they should own. This creates a bottleneck that slows everything: response times, execution speed, and your own capacity for strategic thinking. The company has outgrown its decision architecture.",
-        firstMove: "Map every decision you made this week into three categories: Founder-Only, Needs Approval, and Team-Owned. Then pick one category of decisions you're currently making and formally hand it to a team member with clear boundaries. Not a task — a decision category with the authority to act.",
+        analysis: "Decisions still funnel through you \u2014 your team checks in on things they should own. This creates a bottleneck that slows everything: response times, execution speed, and your own capacity for strategic thinking. The company has outgrown its decision architecture.",
+        firstMove: "Map every decision you made this week into three categories: Founder-Only, Needs Approval, and Team-Owned. Then pick one category of decisions you're currently making and formally hand it to a team member with clear boundaries. Not a task \u2014 a decision category with the authority to act.",
         metric: "Within 30 days, reduce your weekly decision load by 25% through clear delegation of one decision category."
       },
       strategy: {
-        analysis: "You're spending the vast majority of your time in the business — delivery, troubleshooting, firefighting — with little protected time to work on it. The strategic questions that would unlock your next phase of growth keep getting pushed aside by operational urgency.",
-        firstMove: "Block 4 hours per week for strategic work — non-negotiable, recurring, protected. Then identify the top operational escalation path that pulls you away from strategy most often and build a system to handle it without you. The goal isn't to do more — it's to create space for the thinking that matters most.",
+        analysis: "You're spending the vast majority of your time in the business \u2014 delivery, troubleshooting, firefighting \u2014 with little protected time to work on it. The strategic questions that would unlock your next phase of growth keep getting pushed aside by operational urgency.",
+        firstMove: "Block 4 hours per week for strategic work \u2014 non-negotiable, recurring, protected. Then identify the top operational escalation path that pulls you away from strategy most often and build a system to handle it without you. The goal isn't to do more \u2014 it's to create space for the thinking that matters most.",
         metric: "Within 30 days, maintain 4 protected strategic hours per week for 3 consecutive weeks."
       },
       systems: {
-        analysis: "Critical business processes exist primarily in your head. New team members can't ramp without extensive shadowing, and if you're unavailable, things break. Growth is limited by reproducibility — scaling currently requires cloning you.",
-        firstMove: "Identify the one process you do weekly that takes the most time and would have the highest impact if someone else could run it. Document it — not perfectly, just enough that someone competent could follow it. Then train one person to run it and refine the documentation based on their questions.",
+        analysis: "Critical business processes exist primarily in your head. New team members can't ramp without extensive shadowing, and if you're unavailable, things break. Growth is limited by reproducibility \u2014 scaling currently requires cloning you.",
+        firstMove: "Identify the one process you do weekly that takes the most time and would have the highest impact if someone else could run it. Document it \u2014 not perfectly, just enough that someone competent could follow it. Then train one person to run it and refine the documentation based on their questions.",
         metric: "Within 30 days, have one critical weekly process running independently with documentation."
       },
       resilience: {
-        analysis: "You're approaching or at personal capacity limits. The pace isn't sustainable, and without support infrastructure — advisors, peers, leadership bench — the risk compounds. A founder at capacity can't think strategically, and the business suffers as a result.",
-        firstMove: "Identify 2 people in your network who are 2–3 steps ahead of where you are and schedule conversations with them in the next two weeks. Not to ask for help — to get perspective. Then assess your leadership bench: who on your team could step up if you needed to step back for 30 days?",
+        analysis: "You're approaching or at personal capacity limits. The pace isn't sustainable, and without support infrastructure \u2014 advisors, peers, leadership bench \u2014 the risk compounds. A founder at capacity can't think strategically, and the business suffers as a result.",
+        firstMove: "Identify 2 people in your network who are 2\u20133 steps ahead of where you are and schedule conversations with them in the next two weeks. Not to ask for help \u2014 to get perspective. Then assess your leadership bench: who on your team could step up if you needed to step back for 30 days?",
         metric: "Within 30 days, have 2 advisory conversations completed and a written assessment of leadership bench strength."
+      },
+      ownership: {
+        analysis: "You're still operating in reactive mode \u2014 solving problems as they arrive rather than designing the business so fewer problems reach you. Most of your significant decisions are responses to what's urgent, not proactive choices about where the business is heading. Until that orientation shifts, other structural improvements tend not to stick.",
+        firstMove: "Define one clear outcome each team member owns \u2014 not a task, but a result with a number attached. Then shift your weekly check-ins from activity reviews to outcome conversations. The goal is to start building accountability structures where the team owns results, freeing you to focus on designing how the business operates rather than operating it.",
+        metric: "Within 30 days, every direct report owns at least one measurable outcome and reports on it weekly."
       }
     };
 
@@ -139,7 +145,7 @@ exports.handler = async (event) => {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="text-align: center; padding-bottom: 24px; border-bottom: 1px solid #e2ddd5;">
-                    <p style="font-size: 48px; font-weight: 400; color: #1a1a2e; margin: 0; font-family: Georgia, 'Times New Roman', serif;">${totalScore}<span style="font-size: 22px; color: #8a8a9a;"> / 25</span></p>
+                    <p style="font-size: 48px; font-weight: 400; color: #1a1a2e; margin: 0; font-family: Georgia, 'Times New Roman', serif;">${totalScore}<span style="font-size: 22px; color: #8a8a9a;"> / 30</span></p>
                     <p style="font-size: 22px; color: #1a1a2e; margin: 8px 0 0 0; font-family: Georgia, 'Times New Roman', serif;">${readinessLevel}</p>
                   </td>
                 </tr>
@@ -164,6 +170,7 @@ exports.handler = async (event) => {
                 ${scoreBar('Strategic Focus', scores.strategy)}
                 ${scoreBar('Systems & Scalability', scores.systems)}
                 ${scoreBar('Founder Resilience', scores.resilience)}
+                ${scoreBar('Ownership & Accountability', scores.ownership)}
               </table>
             </td>
           </tr>
@@ -191,17 +198,19 @@ exports.handler = async (event) => {
           </tr>
 
           <tr><td style="height: 24px;"></td></tr>
-<!-- Guide Download -->
+
+          <!-- Guide Download -->
           <tr>
             <td style="background: white; border-radius: 12px; border: 1px solid #e2ddd5; padding: 32px; text-align: center;">
               <p style="font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #c17f3e; margin: 0 0 12px 0;">Go Deeper on Your Score</p>
               <h2 style="font-size: 22px; font-weight: 400; color: #1a1a2e; margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif;">The Founder's Threshold Guide</h2>
-              <p style="font-size: 15px; color: #5a5a72; line-height: 1.7; margin: 0 0 20px 0;">What your score reveals about the next 12 months — and the structural shifts that change the trajectory. Five dimensions. Five patterns. The one that matters most for you.</p>
+              <p style="font-size: 15px; color: #5a5a72; line-height: 1.7; margin: 0 0 20px 0;">What your score reveals about the next 12 months \u2014 and the structural shifts that change the trajectory. Six dimensions. Six patterns. The one that matters most for you.</p>
               <a href="https://threshold-signal.netlify.app/founders-threshold-guide.pdf" style="display: inline-block; background: #c17f3e; color: white; padding: 14px 36px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none;">Download the Guide (PDF)</a>
             </td>
           </tr>
 
           <tr><td style="height: 24px;"></td></tr>
+
           <!-- CTA -->
           <tr>
             <td style="background: #1a1a2e; border-radius: 12px; padding: 40px; text-align: center;">
@@ -216,7 +225,7 @@ exports.handler = async (event) => {
           <!-- Footer -->
           <tr>
             <td style="text-align: center; padding-top: 24px; border-top: 1px solid #e2ddd5;">
-              <p style="font-size: 13px; color: #8a8a9a; margin: 0;">© 2026 Uplift Growth Strategies</p>
+              <p style="font-size: 13px; color: #8a8a9a; margin: 0;">\u00a9 2026 Uplift Growth Strategies</p>
               <p style="font-size: 13px; color: #8a8a9a; margin: 8px 0 0 0;">This email was sent because you completed The Threshold Signal assessment.</p>
             </td>
           </tr>
@@ -265,6 +274,7 @@ exports.handler = async (event) => {
       + '.St' + scores.strategy 
       + '.Sy' + scores.systems 
       + '.Re' + scores.resilience 
+      + '.Ow' + scores.ownership
       + '.T' + totalScore;
 
     const mailchimpUrl = 'https://upliftgrowthstrategies.us4.list-manage.com/subscribe/post-json?u=96ce718700bfda66e7f14644a&id=13a4133e04&f_id=00f25ee2f0'
@@ -274,7 +284,7 @@ exports.handler = async (event) => {
     try {
       await fetch(mailchimpUrl);
     } catch (mcError) {
-      // Mailchimp submission is best-effort — don't fail the whole request
+      // Mailchimp submission is best-effort \u2014 don't fail the whole request
       console.error('Mailchimp error (non-fatal):', mcError);
     }
 
